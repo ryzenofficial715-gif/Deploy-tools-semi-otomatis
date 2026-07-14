@@ -1,9 +1,10 @@
 // ============================================
 // DEPLOY TOOL - Semi Otomatis
-// Auto ZIP Multi-File | Created by Ryzen
+// 3 Tombol: Download ZIP | Vercel | Netlify
+// Created by Ryzen
 // ============================================
 
-let uploadedFiles = []; // { name, content, size }
+let uploadedFiles = [];
 
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
@@ -11,6 +12,7 @@ const fileList = document.getElementById('fileList');
 const previewFrame = document.getElementById('previewFrame');
 const btnPreview = document.getElementById('btnPreview');
 const btnUseCode = document.getElementById('btnUseCode');
+const btnDownloadZip = document.getElementById('btnDownloadZip');
 const btnDeployVercel = document.getElementById('btnDeployVercel');
 const btnDeployNetlify = document.getElementById('btnDeployNetlify');
 const infoBox = document.getElementById('infoBox');
@@ -59,11 +61,7 @@ async function handleFiles(files) {
     for (const file of files) {
         if (uploadedFiles.find(f => f.name === file.name && f.size === file.size)) continue;
         const content = await readFile(file);
-        uploadedFiles.push({
-            name: file.name,
-            content: content,
-            size: file.size,
-        });
+        uploadedFiles.push({ name: file.name, content: content, size: file.size });
     }
     renderFileList();
 }
@@ -176,14 +174,7 @@ function updatePreview() {
         }
         previewFrame.srcdoc = html;
     } else if (uploadedFiles.length > 0) {
-        const ext = uploadedFiles[0].name.split('.').pop();
-        if (ext === 'css') {
-            previewFrame.srcdoc = `<html><head><style>${uploadedFiles[0].content}</style></head><body><h1 style="color:#666;font-family:sans-serif;padding:40px;">Preview CSS</h1></body></html>`;
-        } else if (ext === 'js') {
-            previewFrame.srcdoc = `<html><body><h1 style="color:#666;font-family:sans-serif;padding:40px;">Preview JS - Buka Console</h1><script>${uploadedFiles[0].content}</script></body></html>`;
-        } else {
-            previewFrame.srcdoc = `<pre style="padding:20px;font-family:monospace;background:#111;color:#0f0;">${escapeHtml(uploadedFiles[0].content)}</pre>`;
-        }
+        previewFrame.srcdoc = `<pre style="padding:20px;font-family:monospace;background:#111;color:#0f0;">${escapeHtml(uploadedFiles[0].content)}</pre>`;
     } else {
         previewFrame.srcdoc = "<html><body style='display:flex;align-items:center;justify-content:center;height:100%;background:#f5f5f5;color:#999;font-family:sans-serif;'><p>👆 Masukkan kode dulu</p></body></html>";
     }
@@ -217,53 +208,60 @@ function downloadZip(blob) {
 }
 
 // ============================================
-// Deploy to Vercel
+// Tombol 1: Download ZIP
 // ============================================
-btnDeployVercel.addEventListener('click', async () => {
+btnDownloadZip.addEventListener('click', async () => {
     if (uploadedFiles.length === 0) {
         infoBox.innerHTML = '⚠️ <span>Upload file atau tulis kode dulu!</span>';
         infoBox.style.borderColor = 'var(--danger)';
         return;
     }
 
-    infoBox.innerHTML = '📦 <span>Membuat ZIP...</span>';
+    infoBox.innerHTML = '📦 <span>Membuat project.zip...</span>';
     infoBox.style.borderColor = '#3a3a55';
 
     const blob = await generateZip();
     downloadZip(blob);
 
-    infoBox.innerHTML = '✅ <span>ZIP terdownload!</span> Sekarang <b>drag & drop</b> file <b>project.zip</b> ke halaman Vercel.';
+    infoBox.innerHTML = '✅ <span>project.zip terdownload!</span> Sekarang buka Vercel atau Netlify, lalu upload ZIP-nya.';
     infoBox.classList.add('success');
-    showToast('📦 ZIP terdownload! Drag & drop ke Vercel.');
-
-    setTimeout(() => {
-        window.open('https://vercel.com/drop', '_blank');
-    }, 500);
+    showToast('📦 project.zip terdownload!');
 });
 
 // ============================================
-// Deploy to Netlify
+// Tombol 2: Buka Vercel
 // ============================================
-btnDeployNetlify.addEventListener('click', async () => {
+btnDeployVercel.addEventListener('click', () => {
     if (uploadedFiles.length === 0) {
-        infoBox.innerHTML = '⚠️ <span>Upload file atau tulis kode dulu!</span>';
+        infoBox.innerHTML = '⚠️ <span>Upload file dulu, lalu download ZIP sebelum buka Vercel!</span>';
         infoBox.style.borderColor = 'var(--danger)';
         return;
     }
 
-    infoBox.innerHTML = '📦 <span>Membuat ZIP...</span>';
+    infoBox.innerHTML = '▲ <span>Membuka Vercel...</span> Upload file <b>project.zip</b> di halaman Vercel.';
     infoBox.style.borderColor = '#3a3a55';
+    infoBox.classList.remove('success');
 
-    const blob = await generateZip();
-    downloadZip(blob);
+    window.open('https://vercel.com/drop', '_blank');
+    showToast('▲ Buka Vercel. Upload project.zip di sana!');
+});
 
-    infoBox.innerHTML = '✅ <span>ZIP terdownload!</span> Sekarang <b>drag & drop</b> file <b>project.zip</b> ke halaman Netlify.';
-    infoBox.classList.add('success');
-    showToast('📦 ZIP terdownload! Drag & drop ke Netlify.');
+// ============================================
+// Tombol 3: Buka Netlify
+// ============================================
+btnDeployNetlify.addEventListener('click', () => {
+    if (uploadedFiles.length === 0) {
+        infoBox.innerHTML = '⚠️ <span>Upload file dulu, lalu download ZIP sebelum buka Netlify!</span>';
+        infoBox.style.borderColor = 'var(--danger)';
+        return;
+    }
 
-    setTimeout(() => {
-        window.open('https://app.netlify.com/drop', '_blank');
-    }, 500);
+    infoBox.innerHTML = '⬟ <span>Membuka Netlify...</span> Upload file <b>project.zip</b> di halaman Netlify.';
+    infoBox.style.borderColor = '#3a3a55';
+    infoBox.classList.remove('success');
+
+    window.open('https://app.netlify.com/drop', '_blank');
+    showToast('⬟ Buka Netlify. Upload project.zip di sana!');
 });
 
 // ============================================
@@ -276,6 +274,6 @@ function showToast(msg) {
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-console.log('🚀 Deploy Tool - Semi Otomatis Ready');
-console.log('💡 Upload file atau tulis kode → Preview → Deploy');
+console.log('🚀 Deploy Tool Semi Otomatis - Ready');
+console.log('📥 Download ZIP | ▲ Vercel | ⬟ Netlify');
 console.log('Created by Ryzen');
