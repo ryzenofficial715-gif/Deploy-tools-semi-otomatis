@@ -237,7 +237,7 @@ btnDeployVercel.addEventListener('click', async () => {
     showToast('📦 ZIP terdownload! Drag & drop ke Vercel.');
 
     setTimeout(() => {
-        window.open('https://vercel.com/new', '_blank');
+        window.open('https://vercel.com/drop', '_blank');
     }, 500);
 });
 
