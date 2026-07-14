@@ -1,4 +1,4 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
         <div class="header">
             <div class="icon">🚀</div>
             <h1>Deploy Tool</h1>
-            <p>Upload file → Preview → Deploy ke Vercel / Netlify</p>
+            <p>Upload file → Preview → Download ZIP → Deploy</p>
             <span class="badge">⚡ AUTO ZIP • MULTI-FILE • TANPA SETUP</span>
         </div>
 
@@ -59,19 +59,21 @@
             <button class="btn btn-outline" id="btnPreview">👁️ Refresh Preview</button>
         </div>
 
-        <!-- Step 3: Deploy -->
+        <!-- Step 3: Download & Deploy -->
         <div class="card">
-            <h2><span class="step">3</span> Deploy ke Hosting</h2>
+            <h2><span class="step">3</span> Download & Deploy</h2>
             <p class="deploy-info">
-                Klik tombol di bawah, file <span>project.zip</span> akan otomatis terdownload. 
-                Tinggal <span class="gold">drag & drop</span> ke Vercel / Netlify!
+                1️⃣ <span>Download ZIP</span> dulu<br>
+                2️⃣ Lalu buka <span>Vercel</span> atau <span class="gold">Netlify</span><br>
+                3️⃣ Drag & drop file <span>project.zip</span>
             </p>
+            <button class="btn btn-download" id="btnDownloadZip">📥 Download project.zip</button>
             <div class="btn-group">
-                <button class="btn btn-vercel" id="btnDeployVercel">▲ Vercel</button>
-                <button class="btn btn-netlify" id="btnDeployNetlify">⬟ Netlify</button>
+                <button class="btn btn-vercel" id="btnDeployVercel">▲ Buka Vercel</button>
+                <button class="btn btn-netlify" id="btnDeployNetlify">⬟ Buka Netlify</button>
             </div>
             <div class="info-box" id="infoBox">
-                💡 <span>Cara:</span> Klik Vercel/Netlify → ZIP otomatis terdownload → Drag & drop ZIP ke browser → Selesai!
+                💡 <span>Cara:</span> Download ZIP → Buka Vercel/Netlify → Upload ZIP → Selesai!
             </div>
         </div>
 
@@ -82,7 +84,7 @@
     </div>
 
     <!-- Toast -->
-    <div class="toast" id="toast">✅ ZIP berhasil dibuat!</div>
+    <div class="toast" id="toast">✅ Berhasil!</div>
 
     <script src="script.js"></script>
 </body>
